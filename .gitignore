@@ -20,3 +20,13 @@
 /src/Account.Domain/obj
 /src/Account.Infrastructure/bin/Debug/net8.0
 /src/Account.Infrastructure/obj
+/src/Account.Api.Test/bin/Debug/net8.0
+/src/Account.Api.Test/obj
+/src/.vs/ProjectEvaluation
+/src/Account.Application.Test/bin/Debug/net8.0
+/src/Account.Application.Test/obj
+/src/Account.Domain.Test/bin/Debug/net8.0
+/src/Account.Domain.Test/obj/Debug/net8.0
+/src/Account.Domain.Test/obj
+/src/Account.Infrastructure.Test/bin/Debug/net8.0
+/src/Account.Infrastructure.Test/obj
