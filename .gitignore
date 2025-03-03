@@ -1,0 +1,22 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/.vs
+/Account.Api/bin/Debug/net8.0
+/Account.Api/obj
+/Account.Application/obj
+/Account.Domain/obj
+/Account.Infrastructure/obj
+/Account.Application/bin/Debug/net8.0
+/Account.Domain/bin/Debug/net8.0
+/Account.Infrastructure/bin/Debug/net8.0
+/src/.vs/Account.Api
+/src/Account.Api/bin/Debug/net8.0
+/src/Account.Api/obj
+/src/Account.Application/bin/Debug/net8.0
+/src/Account.Application/obj
+/src/Account.Domain/bin/Debug/net8.0
+/src/Account.Domain/obj
+/src/Account.Infrastructure/bin/Debug/net8.0
+/src/Account.Infrastructure/obj
