@@ -1,4 +1,5 @@
 using Account.Api;
+using Account.Api.Exceptions;
 using Asp.Versioning;
 using NLog;
 using NLog.Extensions.Logging;
@@ -10,7 +11,8 @@ internal class Program
         var builder = WebApplication.CreateBuilder(args);
 
         // Add services to the container.
-
+        builder.Services.AddProblemDetails();
+        builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
         builder.Services.AddControllers();
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         builder.Services.AddEndpointsApiExplorer();
@@ -46,6 +48,8 @@ internal class Program
             app.UseSwagger();
             app.UseSwaggerUI();
         }
+
+        app.UseExceptionHandler();
 
         app.UseHttpsRedirection();
 
