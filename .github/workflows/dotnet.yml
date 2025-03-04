@@ -30,7 +30,7 @@ jobs:
       run: dotnet test --no-build --verbosity normal --logger "trx"
       working-directory: src/        
     - name: Test Report
-      uses: dorny/test-reporter@v4
+      uses: dorny/test-reporter@v1
       if: always()
       with:
         name: Summary Tests
