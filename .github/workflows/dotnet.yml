@@ -40,8 +40,7 @@ jobs:
           with:
             name: Summary Tests
             path: "src/**/**/*.trx"
-            reporter: dotnet-trx
-            fail-on-error: true
+            reporter: dotnet-trx            
         - name: Generate test summary
           run: |
             PASSED=$(grep -oP '(?<=Passed: )\d+' src/**/**/*.trx | awk '{s+=$1} END {print s}')
