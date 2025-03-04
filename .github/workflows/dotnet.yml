@@ -28,13 +28,13 @@ jobs:
       working-directory: src/
     - name: Test
       run: dotnet test --no-build --verbosity normal --logger "trx"
-      working-directory: src/    
-    - name: Upload Test Results
-      uses: actions/upload-artifact@v4
+      working-directory: src/        
+    - name: Test Report
+      uses: dorny/test-reporter@v4
+      if: always()
       with:
-        name: test-results
-        path: "src/**/**/*.trx"    
-    - name: Display test results
-      run: |
-        echo "Displaying test results..."
-        cat src/**/**/*.trx
+        name: Summary Tests
+        path: "src/**/**/*.trx"
+        reporter: dotnet-trx
+        fail-on-error: true
+      
