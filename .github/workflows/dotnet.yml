@@ -33,7 +33,7 @@ jobs:
       uses: actions/upload-artifact@v3
       with:
         name: test-results
-        path: **/*.trx    
+        path: "**/*.trx"    
     - name: Display test results
       run: |
         echo "Displaying test results..."
