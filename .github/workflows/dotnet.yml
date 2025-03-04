@@ -40,17 +40,5 @@ jobs:
           with:
             name: Summary Tests
             path: "src/**/**/*.trx"
-            reporter: dotnet-trx            
-        - name: Generate test summary
-          run: |
-            PASSED=$(grep -oP '(?<=Passed: )\d+' src/**/**/*.trx | awk '{s+=$1} END {print s}')
-            FAILED=$(grep -oP '(?<=Failed: )\d+' src/**/**/*.trx | awk '{s+=$1} END {print s}')
-            echo "PASSED=$PASSED" >> $GITHUB_ENV
-            echo "FAILED=$FAILED" >> $GITHUB_ENV
-
-        - name: Upload test summary badge
-          uses: actions/upload-artifact@v4
-          with:
-            name: test-summary
-            path: "src/test-summary.json"
-      
+            reporter: dotnet-trx
+            fail-on-error: true  
