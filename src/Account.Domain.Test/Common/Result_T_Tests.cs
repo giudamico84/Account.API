@@ -82,7 +82,7 @@ namespace Account.Domain.Test.Common
             // Assert
             result.IsSuccess.Should().BeFalse();
             result.Error.Should().NotBeNull();
-            result.Error!.Value.Code.Should().Be("ErrorCodse");
+            result.Error!.Value.Code.Should().Be("ErrorCode");
             result.Error.Value.Domain.Should().Be("Domain");
             result.Error.Value.Description.Should().Be("Description");
         }
