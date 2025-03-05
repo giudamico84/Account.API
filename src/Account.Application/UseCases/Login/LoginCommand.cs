@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Account.Domain.Common;
+using MediatR;
 
 namespace Account.Application.UseCases.Login
 {
-    public class LoginCommand
-    {
-    }
+    public record class LoginCommand(string Email) : IRequest<Result<string>>;
 }

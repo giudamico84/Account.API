@@ -6,9 +6,9 @@ namespace Account.Domain.Errors
     {
         protected DomainErrors() { }
 
-        public const string DOMAIN = "ACCOUNT";
+        const string DOMAIN = "Account.Api";
 
-        public static readonly Error AnalyticsServerError = new("E001", DOMAIN, "Analytics Server Error");       
+        public static readonly Error UserNotFound = new("UserRepository.UserNotFound", DOMAIN, "User not found");       
 
     }
 }

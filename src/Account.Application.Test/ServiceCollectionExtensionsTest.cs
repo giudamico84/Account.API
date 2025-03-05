@@ -2,16 +2,16 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using NSubstitute;
 using FluentAssertions;
-using Account.Domain.Interfaces;
+using MediatR;
 
-namespace Account.Infrastructure.Test
+namespace Account.Application.Test
 {
     public class ServiceCollectionExtensionsTest
     {
         private static IServiceProvider Provider()
         {
             var services = new ServiceCollection();
-            services.AddInfrastructureServices(Substitute.For<IConfiguration>());
+            services.AddApplicationServices(Substitute.For<IConfiguration>());
             return services.BuildServiceProvider();
         }
 
@@ -22,16 +22,9 @@ namespace Account.Infrastructure.Test
         }
 
         [Fact]
-        public void ShouldResolve_IJwtProvider()
+        public void ShouldResolve_IMediator()
         {
-            var result = GetRequiredService<IJwtProvider>();
-            result.Should().NotBeNull();
-        }
-
-        [Fact]
-        public void ShouldResolve_IUserRepository()
-        {
-            var result = GetRequiredService<IUserRepository>();
+            var result = GetRequiredService<IMediator>();
             result.Should().NotBeNull();
         }
     }
