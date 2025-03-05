@@ -41,4 +41,4 @@ jobs:
             name: Summary Tests
             path: "src/**/**/*.trx"
             reporter: dotnet-trx
-            fail_on_error: true
+            fail-on-error: true

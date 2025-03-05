@@ -4,14 +4,14 @@ using NSubstitute;
 using FluentAssertions;
 using Account.Domain.Interfaces;
 
-namespace Account.Api.Test
+namespace Account.Infrastructure.Test
 {
     public class ServiceCollectionExtensionsTest
     {
         private static IServiceProvider Provider()
         {
             var services = new ServiceCollection();
-            services.Setup(Substitute.For<IConfiguration>());
+            services.AddInfrastructureServices(Substitute.For<IConfiguration>());
             return services.BuildServiceProvider();
         }
 
@@ -19,6 +19,13 @@ namespace Account.Api.Test
         {
             var provider = Provider();
             return provider.GetRequiredService<T>();
-        }        
+        }
+
+        [Fact]
+        public void ShouldResolve_IJwtProvider()
+        {
+            var result = GetRequiredService<IJwtProvider>();
+            result.Should().NotBeNull();
+        }
     }
 }
