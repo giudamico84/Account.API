@@ -16,8 +16,8 @@
 
         public static Result Fail(Error error) => new(false, error);
 
-        public static Result Fail(string errorCode, string? domain = null, string? description = null)
-            => Fail(new Error(errorCode, domain, description));
+        public static Result Fail(string errorCode, string? description = null)
+            => Fail(new Error(errorCode, description));
 
         public static implicit operator Result(Error error) => new(false, error);
     }

@@ -20,7 +20,7 @@ namespace Account.Domain.Test.Common
         public void Fail_WithError_ShouldReturnIsSuccessFalse()
         {
             // Arrange
-            var error = new Error("ErrorCode", "Domain", "Description");
+            var error = new Error("ErrorCode", "Description");
 
             // Act
             var result = Result.Fail(error);
@@ -29,7 +29,6 @@ namespace Account.Domain.Test.Common
             result.IsSuccess.Should().BeFalse();
             result.Error.Should().NotBeNull();
             result.Error!.Value.Code.Should().Be("ErrorCode");
-            result.Error.Value.Domain.Should().Be("Domain");
             result.Error.Value.Description.Should().Be("Description");
         }
 
@@ -37,13 +36,12 @@ namespace Account.Domain.Test.Common
         public void Fail_WithStringParameters_ShouldReturnIsSuccessFalseAndErrorDetails()
         {
             // Act
-            var result = Result.Fail("ErrorCode", "Domain", "Description");
+            var result = Result.Fail("ErrorCode", "Description");
 
             // Assert
             result.IsSuccess.Should().BeFalse();
             result.Error.Should().NotBeNull();
             result.Error!.Value.Code.Should().Be("ErrorCode");
-            result.Error.Value.Domain.Should().Be("Domain");
             result.Error.Value.Description.Should().Be("Description");
         }
 
@@ -51,7 +49,7 @@ namespace Account.Domain.Test.Common
         public void ImplicitConversionFromError_ShouldReturnFailResult()
         {
             // Arrange
-            var error = new Error("ErrorCode", "Domain", "Description");
+            var error = new Error("ErrorCode", "Description");
 
             // Act
             Result result = error;
@@ -60,7 +58,6 @@ namespace Account.Domain.Test.Common
             result.IsSuccess.Should().BeFalse();
             result.Error.Should().NotBeNull();
             result.Error!.Value.Code.Should().Be("ErrorCode");
-            result.Error.Value.Domain.Should().Be("Domain");
             result.Error.Value.Description.Should().Be("Description");
         }
     }

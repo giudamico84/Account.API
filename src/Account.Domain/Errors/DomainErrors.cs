@@ -6,9 +6,6 @@ namespace Account.Domain.Errors
     {
         protected DomainErrors() { }
 
-        const string DOMAIN = "Account.Api";
-
-        public static readonly Error UserNotFound = new("UserRepository.UserNotFound", DOMAIN, "User not found");       
-
+        public static readonly Error UserNotFound = new("UserRepository.UserNotFound", "User not found");       
     }
 }

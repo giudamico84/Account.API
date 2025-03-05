@@ -9,11 +9,10 @@ namespace Account.Domain.Test.Common
         public void Constructor_ShouldInitializePropertiesCorrectly()
         {
             // Act
-            var error = new Error("ErrorCode", "Domain", "Description");
+            var error = new Error("ErrorCode", "Description");
 
             // Assert
             error.Code.Should().Be("ErrorCode");
-            error.Domain.Should().Be("Domain");
             error.Description.Should().Be("Description");
         }
 
@@ -25,7 +24,6 @@ namespace Account.Domain.Test.Common
 
             // Assert
             error.Code.Should().Be("ErrorCode");
-            error.Domain.Should().BeNull();
             error.Description.Should().BeNull();
         }
 
@@ -33,30 +31,20 @@ namespace Account.Domain.Test.Common
         public void ToString_ShouldReturnCorrectString()
         {
             // Act
-            var error = new Error("ErrorCode", "Domain", "Description");
-
-            // Assert
-            error.ToString().Should().Be("Code: ErrorCode, Domain: Domain, Description: Description");
-        }
-
-        [Fact]
-        public void ToString_WithNullDomain_ShouldReturnCorrectString()
-        {
-            // Act
-            var error = new Error("ErrorCode", null, "Description");
+            var error = new Error("ErrorCode", "Description");
 
             // Assert
             error.ToString().Should().Be("Code: ErrorCode, Description: Description");
         }
-
+        
         [Fact]
         public void ToString_WithNullDescription_ShouldReturnCorrectString()
         {
             // Act
-            var error = new Error("ErrorCode", "Domain", null);
+            var error = new Error("ErrorCode", null);
 
             // Assert
-            error.ToString().Should().Be("Code: ErrorCode, Domain: Domain");
+            error.ToString().Should().Be("Code: ErrorCode");
         }
 
         [Fact]
