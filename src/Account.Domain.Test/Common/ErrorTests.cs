@@ -6,55 +6,72 @@ namespace Account.Domain.Test.Common
     public class ErrorTests
     {
         [Fact]
-        public void Constructor_ShouldInitializePropertiesCorrectly()
+        public void None_ShouldHaveEmptyCodeAndDescription()
         {
-            // Act
-            var error = new Error("ErrorCode", "Description");
+            var error = Error.None;
 
-            // Assert
-            error.Code.Should().Be("ErrorCode");
-            error.Description.Should().Be("Description");
+            error.Code.Should().BeEmpty();
+            error.Description.Should().BeEmpty();
+            error.Type.Should().Be(ErrorType.Failure);
         }
 
         [Fact]
-        public void Constructor_WithNullDomainAndDescription_ShouldInitializeCorrectly()
+        public void NullValue_ShouldHaveCorrectProperties()
         {
-            // Act
-            var error = new Error("ErrorCode");
+            var error = Error.NullValue;
 
-            // Assert
-            error.Code.Should().Be("ErrorCode");
-            error.Description.Should().BeNull();
+            error.Code.Should().Be("General.Null");
+            error.Description.Should().Be("Null value was provided");
+            error.Type.Should().Be(ErrorType.Failure);
         }
 
         [Fact]
-        public void ToString_ShouldReturnCorrectString()
+        public void Failure_ShouldCreateErrorWithFailureType()
         {
-            // Act
-            var error = new Error("ErrorCode", "Description");
+            var error = Error.Failure("Test.Code", "Test failure");
 
-            // Assert
-            error.ToString().Should().Be("Code: ErrorCode, Description: Description");
-        }
-        
-        [Fact]
-        public void ToString_WithNullDescription_ShouldReturnCorrectString()
-        {
-            // Act
-            var error = new Error("ErrorCode", null);
-
-            // Assert
-            error.ToString().Should().Be("Code: ErrorCode");
+            error.Code.Should().Be("Test.Code");
+            error.Description.Should().Be("Test failure");
+            error.Type.Should().Be(ErrorType.Failure);
         }
 
         [Fact]
-        public void ToString_WithNullDomainAndDescription_ShouldReturnCorrectString()
+        public void NotFound_ShouldCreateErrorWithNotFoundType()
         {
-            // Act
-            var error = new Error("ErrorCode");
+            var error = Error.NotFound("Test.Code", "Not found");
 
-            // Assert
-            error.ToString().Should().Be("Code: ErrorCode");
+            error.Code.Should().Be("Test.Code");
+            error.Description.Should().Be("Not found");
+            error.Type.Should().Be(ErrorType.NotFound);
+        }
+
+        [Fact]
+        public void Problem_ShouldCreateErrorWithProblemType()
+        {
+            var error = Error.Problem("Test.Code", "A problem occurred");
+
+            error.Code.Should().Be("Test.Code");
+            error.Description.Should().Be("A problem occurred");
+            error.Type.Should().Be(ErrorType.Problem);
+        }
+
+        [Fact]
+        public void Conflict_ShouldCreateErrorWithConflictType()
+        {
+            var error = Error.Conflict("Test.Code", "A conflict occurred");
+
+            error.Code.Should().Be("Test.Code");
+            error.Description.Should().Be("A conflict occurred");
+            error.Type.Should().Be(ErrorType.Conflict);
+        }
+
+        [Fact]
+        public void ToString_ShouldReturnCorrectFormat()
+        {
+            var error = new Error("Test.Code", "Test description", ErrorType.Failure);
+
+            string expected = "Code: Test.Code, Description: Test description, ErrorType: Failure";
+            error.ToString().Should().Be(expected);
         }
     }
 }

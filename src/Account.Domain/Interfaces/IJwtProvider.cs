@@ -1,4 +1,5 @@
-﻿using Account.Domain.Entities;
+﻿using Account.Domain.Common;
+using Account.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,6 @@ namespace Account.Domain.Interfaces
 {
     public interface IJwtProvider
     {
-        string Generate(User user);
+        Task<Result<string>> Generate(User user);
     }
 }

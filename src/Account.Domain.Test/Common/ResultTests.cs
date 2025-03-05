@@ -6,59 +6,54 @@ namespace Account.Domain.Test.Common
     public class ResultTests
     {
         [Fact]
-        public void Success_ShouldReturnIsSuccessTrue()
+        public void Success_ShouldReturnTrueForIsSuccessAndNoError()
         {
-            // Act
+            // Arrange
             var result = Result.Success;
 
-            // Assert
+            // Act & Assert
             result.IsSuccess.Should().BeTrue();
             result.Error.Should().BeNull();
         }
 
         [Fact]
-        public void Fail_WithError_ShouldReturnIsSuccessFalse()
+        public void Fail_WithError_ShouldReturnFalseForIsSuccessAndError()
         {
             // Arrange
-            var error = new Error("ErrorCode", "Description");
-
-            // Act
+            var error = new Error("ErrorCode", "Some error description", ErrorType.Validation);
             var result = Result.Fail(error);
 
-            // Assert
+            // Act & Assert
             result.IsSuccess.Should().BeFalse();
-            result.Error.Should().NotBeNull();
-            result.Error!.Value.Code.Should().Be("ErrorCode");
-            result.Error.Value.Description.Should().Be("Description");
+            result.Error.Should().Be(error);
         }
 
         [Fact]
-        public void Fail_WithStringParameters_ShouldReturnIsSuccessFalseAndErrorDetails()
-        {
-            // Act
-            var result = Result.Fail("ErrorCode", "Description");
-
-            // Assert
-            result.IsSuccess.Should().BeFalse();
-            result.Error.Should().NotBeNull();
-            result.Error!.Value.Code.Should().Be("ErrorCode");
-            result.Error.Value.Description.Should().Be("Description");
-        }
-
-        [Fact]
-        public void ImplicitConversionFromError_ShouldReturnFailResult()
+        public void Fail_WithParameters_ShouldReturnFalseForIsSuccessAndCorrectError()
         {
             // Arrange
-            var error = new Error("ErrorCode", "Description");
+            var result = Result.Fail("ErrorCode", "Some error description", ErrorType.Validation);
+
+            // Act & Assert
+            result.IsSuccess.Should().BeFalse();
+            result.Error.Should().NotBeNull();
+            result.Error?.Code.Should().Be("ErrorCode");
+            result.Error?.Description.Should().Be("Some error description");
+            result.Error?.Type.Should().Be(ErrorType.Validation);
+        }
+
+        [Fact]
+        public void ImplicitOperator_ShouldConvertErrorToResult()
+        {
+            // Arrange
+            var error = new Error("ErrorCode", "Some error description", ErrorType.Validation);
 
             // Act
             Result result = error;
 
             // Assert
             result.IsSuccess.Should().BeFalse();
-            result.Error.Should().NotBeNull();
-            result.Error!.Value.Code.Should().Be("ErrorCode");
-            result.Error.Value.Description.Should().Be("Description");
+            result.Error.Should().Be(error);
         }
     }
 }

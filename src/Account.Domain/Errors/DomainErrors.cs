@@ -6,6 +6,6 @@ namespace Account.Domain.Errors
     {
         protected DomainErrors() { }
 
-        public static readonly Error UserNotFound = new("UserRepository.UserNotFound", "User not found");       
+        public static readonly Error UserNotFound = Error.NotFound("UserRepository.UserNotFound", "User not found");       
     }
 }

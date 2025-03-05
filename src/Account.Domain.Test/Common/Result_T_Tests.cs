@@ -6,83 +6,69 @@ namespace Account.Domain.Test.Common
     public class Result_T_Tests
     {
         [Fact]
-        public void Success_ShouldReturnIsSuccessTrueWithValue()
-        {
-            // Act
-            var result = Result<int>.Success(42);
-
-            // Assert
-            result.IsSuccess.Should().BeTrue();
-            result.Value.Should().Be(42);
-            result.Error.Should().BeNull();
-        }
-
-        [Fact]
-        public void Fail_WithError_ShouldReturnIsSuccessFalseWithError()
+        public void Success_ShouldReturnTrueForIsSuccessAndCorrectValue()
         {
             // Arrange
-            var error = new Error("ErrorCode", "Description");
-
-            // Act
-            var result = Result<int>.Fail(error);
-
-            // Assert
-            result.IsSuccess.Should().BeFalse();
-            result.Value.Should().Be(default(int)); // default(int) is 0
-            result.Error.Should().NotBeNull();
-            result.Error!.Value.Code.Should().Be("ErrorCode");
-            result.Error.Value.Description.Should().Be("Description");
-        }
-
-        [Fact]
-        public void ImplicitConversion_FromValue_ShouldReturnSuccessResult()
-        {
-            // Act
-            Result<int> result = 42;
-
-            // Assert
-            result.IsSuccess.Should().BeTrue();
-            result.Value.Should().Be(42);
-            result.Error.Should().BeNull();
-        }
-
-        [Fact]
-        public void ImplicitConversion_FromResultToValue_ShouldReturnValue()
-        {
-            // Act
-            var result = Result<int>.Success(42);
-            int value = result;
-
-            // Assert
-            value.Should().Be(42);
-        }
-
-        [Fact]
-        public void ImplicitConversion_FromFailedResultToValue_ShouldThrowInvalidCastException()
-        {
-            // Arrange
-            var error = new Error("ErrorCode", "Description");
-            var result = Result<int>.Fail(error);
+            var value = "Test Value";
+            var result = Result<string>.Success(value);
 
             // Act & Assert
-            Action act = () => { int value = result; };
-            act.Should().Throw<InvalidCastException>().WithMessage("The result was not successful");
+            result.IsSuccess.Should().BeTrue();
+            result.Value.Should().Be(value);
+            result.Error.Should().BeNull();
         }
 
         [Fact]
-        public void ImplicitConversion_FromError_ShouldReturnFailResult()
+        public void Fail_WithError_ShouldReturnFalseForIsSuccessAndCorrectError()
         {
             // Arrange
-            var error = new Error("ErrorCode", "Description");
-                
+            var error = new Error("ErrorCode", "Some error description", ErrorType.Validation);
+            var result = Result<string>.Fail(error);
+
+            // Act & Assert
+            result.IsSuccess.Should().BeFalse();
+            result.Error.Should().Be(error);
+            result.Value.Should().BeNull();
+        }
+
+        [Fact]
+        public void ImplicitOperator_ShouldConvertValueToResult()
+        {
+            // Arrange
+            var value = "Test Value";
+
             // Act
-            Result<int> result = error;
+            Result<string> result = value;
 
             // Assert
-            result.IsSuccess.Should().BeFalse();
-            result.Error.Should().NotBeNull();
-            result.Error!.Value.Code.Should().Be("ErrorCode");
-            result.Error.Value.Description.Should().Be("Description");
+            result.IsSuccess.Should().BeTrue();
+            result.Value.Should().Be(value);
+            result.Error.Should().BeNull();
+        }
+
+        [Fact]
+        public void ImplicitOperator_ShouldThrowExceptionWhenResultIsFail()
+        {
+            // Arrange
+            var error = new Error("ErrorCode", "Some error description", ErrorType.Validation);
+            var result = Result<string>.Fail(error);
+
+            // Act & Assert
+            Assert.Throws<InvalidCastException>(() => { string value = result; });
+        }
+
+        [Fact]
+        public void ImplicitOperator_ShouldConvertResultToValueWhenSuccessful()
+        {
+            // Arrange
+            var value = "Test Value";
+            var result = Result<string>.Success(value);
+
+            // Act
+            string actualValue = result;
+
+            // Assert
+            actualValue.Should().Be(value);
         }
     }
 }

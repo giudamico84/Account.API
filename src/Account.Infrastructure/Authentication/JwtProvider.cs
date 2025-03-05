@@ -1,4 +1,5 @@
-﻿using Account.Domain.Entities;
+﻿using Account.Domain.Common;
+using Account.Domain.Entities;
 using Account.Domain.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -10,7 +11,7 @@ namespace Account.Infrastructure.Authentication
 {
     public class JwtProvider : IJwtProvider
     {
-        public string Generate(User user)
+        public async Task<Result<string>> Generate(User user)
         {
             throw new NotImplementedException();
         }

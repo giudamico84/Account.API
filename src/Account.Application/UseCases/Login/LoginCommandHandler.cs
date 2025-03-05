@@ -9,11 +9,13 @@ namespace Account.Application.UseCases.Login
     public sealed class LoginCommandHandler : IRequestHandler<LoginCommand, Result<string>>
     {
         private readonly IUserRepository _userRepository;
+        private readonly IJwtProvider _jwtProvider;
         private readonly ILogger<LoginCommandHandler> _logger;
 
-        public LoginCommandHandler(IUserRepository userRepository, ILogger<LoginCommandHandler> logger)
+        public LoginCommandHandler(IUserRepository userRepository, IJwtProvider jwtProvider, ILogger<LoginCommandHandler> logger)
         {
             _userRepository = userRepository;
+            _jwtProvider = jwtProvider;
             _logger = logger;
         }       
 
@@ -26,11 +28,9 @@ namespace Account.Application.UseCases.Login
                 return DomainErrors.UserNotFound;
             }
 
-            //generate jwt
+            var token = await _jwtProvider.Generate(user.Value);           
 
-            //return jwt
-
-            return null;
+            return token;
         }
     }
 }
