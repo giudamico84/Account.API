@@ -14,7 +14,8 @@ namespace Account.Infrastructure.Repository
         public async ValueTask<Result<User>> GetUserByEmailAsync(string email)
         {
             return await Task.FromResult(new User
-            {                
+            {
+                Id = Guid.NewGuid(),
                 Email = email
             });
         }

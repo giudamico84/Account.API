@@ -1,8 +1,12 @@
 using Account.Api;
 using Account.Api.Exceptions;
+using Account.Api.OptionsSetup;
 using Asp.Versioning;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 using NLog;
 using NLog.Extensions.Logging;
+using System.Text;
 
 internal class Program
 {
@@ -17,6 +21,12 @@ internal class Program
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
+
+        builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            .AddJwtBearer();
+
+        builder.Services.ConfigureOptions<JwtOptionsSetup>();
+        builder.Services.ConfigureOptions<JwtBearerOptionsSetup>();
 
         builder.Services
             .AddApiVersioning(options =>
@@ -52,6 +62,8 @@ internal class Program
         app.UseExceptionHandler();
 
         app.UseHttpsRedirection();
+
+        app.UseAuthentication();
 
         app.UseAuthorization();
 

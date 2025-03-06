@@ -28,7 +28,7 @@ namespace Account.Application.UseCases.Login
                 return DomainErrors.UserNotFound;
             }
 
-            var token = await _jwtProvider.Generate(user.Value);           
+            var token = _jwtProvider.Generate(user.Value!);           
 
             return token;
         }

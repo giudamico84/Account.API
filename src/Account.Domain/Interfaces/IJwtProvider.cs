@@ -10,6 +10,6 @@ namespace Account.Domain.Interfaces
 {
     public interface IJwtProvider
     {
-        Task<Result<string>> Generate(User user);
+        Result<string> Generate(User user);
     }
 }

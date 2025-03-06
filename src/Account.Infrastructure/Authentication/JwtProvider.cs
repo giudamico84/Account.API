@@ -1,6 +1,7 @@
 ﻿using Account.Domain.Common;
 using Account.Domain.Entities;
 using Account.Domain.Interfaces;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
@@ -14,17 +15,28 @@ namespace Account.Infrastructure.Authentication
 {
     public class JwtProvider : IJwtProvider
     {
-        public async Task<Result<string>> Generate(User user)
-        {
-            var claims = new Claim[] { };
+        private readonly JwtOptions _options;
 
-            var signingCredentials = new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes("secret-key")), SecurityAlgorithms.HmacSha256);
+        public JwtProvider(IOptions<JwtOptions> options)
+        {
+            _options = options.Value;
+        }
+
+        public Result<string> Generate(User user)
+        {
+            var claims = new Claim[] 
+            {
+                new (JwtRegisteredClaimNames.Sub, user.Id.ToString()),
+                new (JwtRegisteredClaimNames.Email, user.Email)
+            };
+
+            var signingCredentials = new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_options.SecretKey)), SecurityAlgorithms.HmacSha256);
 
             var token = new JwtSecurityToken(
-                issuer: "issuer",
-                audience: "audience",
+                issuer: _options.Issuer,
+                audience: _options.Audience,
                 claims: claims,
-                null,
+                notBefore: null,
                 expires: DateTime.UtcNow.AddHours(1),
                 signingCredentials: signingCredentials
             );
