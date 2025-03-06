@@ -65,7 +65,7 @@ namespace Account.Domain.Test.Common
             var result = Result<string>.Success(value);
 
             // Act
-            string actualValue = result;
+            var actualValue = result.Value;
 
             // Assert
             actualValue.Should().Be(value);
