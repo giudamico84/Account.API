@@ -2,14 +2,10 @@
 using Account.Domain.Entities;
 using Account.Domain.Interfaces;
 using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.IdentityModel.Tokens;
-using System;
-using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Security.Claims;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Account.Infrastructure.Authentication
 {
@@ -32,16 +28,18 @@ namespace Account.Infrastructure.Authentication
 
             var signingCredentials = new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_options.SecretKey)), SecurityAlgorithms.HmacSha256);
 
-            var token = new JwtSecurityToken(
-                issuer: _options.Issuer,
-                audience: _options.Audience,
-                claims: claims,
-                notBefore: null,
-                expires: DateTime.UtcNow.AddHours(1),
-                signingCredentials: signingCredentials
-            );
+            var tokenDescription = new SecurityTokenDescriptor
+            {
+                Issuer = _options.Issuer,
+                Audience = _options.Audience,
+                Subject = new ClaimsIdentity(claims),
+                Expires = DateTime.UtcNow.AddHours(1),
+                SigningCredentials = signingCredentials                
+            };
 
-            string tokenString = new JwtSecurityTokenHandler().WriteToken(token);
+            var handler = new JsonWebTokenHandler();
+
+            string tokenString = handler.CreateToken(tokenDescription);
 
             return tokenString;
         }

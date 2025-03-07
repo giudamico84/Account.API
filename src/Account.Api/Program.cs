@@ -1,10 +1,8 @@
 using Account.Api;
 using Account.Api.Exceptions;
-using Account.Api.OptionsSetup;
 using Asp.Versioning;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
-using NLog;
 using NLog.Extensions.Logging;
 using System.Text;
 
@@ -20,12 +18,24 @@ internal class Program
         builder.Services.AddControllers();
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         builder.Services.AddEndpointsApiExplorer();
-        builder.Services.AddSwaggerGen();
+        builder.Services.AddSwaggerGenWithAuth();
 
         builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-            .AddJwtBearer();
+            .AddJwtBearer(options =>
+            {
+                options.RequireHttpsMetadata = false;
 
-        builder.Services.ConfigureOptions<JwtBearerOptionsSetup>();
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
+                    ValidIssuer = builder.Configuration["JwtOptions:Issuer"],
+                    ValidAudience = builder.Configuration["JwtOptions:Audience"],
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JwtOptions:SecretKey"] ?? ""))
+                };
+            });
 
         builder.Services
             .AddApiVersioning(options =>
@@ -62,11 +72,11 @@ internal class Program
 
         app.UseHttpsRedirection();
 
+        app.MapControllers();
+
         app.UseAuthentication();
 
         app.UseAuthorization();
-
-        app.MapControllers();
 
         app.Run();
     }
