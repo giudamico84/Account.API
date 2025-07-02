@@ -30,3 +30,5 @@
 /src/Account.Domain.Test/obj
 /src/Account.Infrastructure.Test/bin/Debug/net8.0
 /src/Account.Infrastructure.Test/obj
+/src/Account.Db.Migrations/bin/Debug/net8.0
+/src/Account.Db.Migrations/obj
