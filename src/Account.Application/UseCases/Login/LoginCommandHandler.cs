@@ -23,12 +23,12 @@ namespace Account.Application.UseCases.Login
         {
             var user = await _userRepository.GetUserByEmailAsync(request.Email);
 
-            if (!user.IsSuccess)
+            if (user == null)
             {
                 return DomainErrors.UserNotFound;
             }
 
-            var token = _jwtProvider.Generate(user.Value!);           
+            var token = _jwtProvider.Generate(user);           
 
             return token;
         }

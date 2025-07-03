@@ -1,6 +1,8 @@
 ﻿using Account.Domain.Common;
 using Account.Domain.Entities;
 using Account.Domain.Interfaces;
+using Account.Infrastructure.Db;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,13 +13,24 @@ namespace Account.Infrastructure.Repository
 {
     public class UserRepository : IUserRepository
     {
-        public async ValueTask<Result<User>> GetUserByEmailAsync(string email)
+        private readonly ApplicationDbContext _context;
+
+        public UserRepository(ApplicationDbContext applicationDbContext)
         {
-            return await Task.FromResult(new User
+            _context = applicationDbContext;
+        }
+
+        public async ValueTask<User> GetUserByEmailAsync(string email)
+        {
+            var user = await _context.Users.FirstOrDefaultAsync(t => t.Email == email);
+
+            if (user == null) return null;
+
+            return new User
             {
-                Id = Guid.NewGuid(),
-                Email = email
-            });
+                Id = user.Id,
+                Email = user.Email
+            };
         }
     }
 }

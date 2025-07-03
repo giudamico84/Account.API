@@ -22,7 +22,7 @@ namespace Account.Application.UseCases.User.GetUser
         {
             var user = await _userRepository.GetUserByEmailAsync(request.Email);
 
-            if (!user.IsSuccess)
+            if (user == null)
             {
                 return DomainErrors.UserNotFound;
             }
