@@ -55,9 +55,9 @@ public class UserController : ControllerBase
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> GetUserByEmailAsync([Required] string email, CancellationToken cancellationToken)
     {
-        var getUserCommand = new GetUserCommand(email);
+        var getUserQuery = new GetUserQuery(email);
 
-        var result = await _mediator.Send(getUserCommand, cancellationToken);
+        var result = await _mediator.Send(getUserQuery, cancellationToken);
 
         if (result.IsSuccess)
             return Ok(result.Value);

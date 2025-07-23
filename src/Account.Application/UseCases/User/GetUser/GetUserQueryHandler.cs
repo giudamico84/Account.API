@@ -7,18 +7,18 @@ using Microsoft.Extensions.Logging;
 
 namespace Account.Application.UseCases.User.GetUser
 {
-    public sealed class GetUserCommandHandler : IRequestHandler<GetUserCommand, Result<Domain.Entities.User>>
+    public sealed class GetUserQueryHandler : IRequestHandler<GetUserQuery, Result<Domain.Entities.User>>
     {
         private readonly IUserRepository _userRepository;
         private readonly ILogger<LoginCommandHandler> _logger;
 
-        public GetUserCommandHandler(IUserRepository userRepository, ILogger<LoginCommandHandler> logger)
+        public GetUserQueryHandler(IUserRepository userRepository, ILogger<LoginCommandHandler> logger)
         {
             _userRepository = userRepository;
             _logger = logger;
         }
 
-        public async Task<Result<Account.Domain.Entities.User>> Handle(GetUserCommand request, CancellationToken cancellationToken)
+        public async Task<Result<Account.Domain.Entities.User>> Handle(GetUserQuery request, CancellationToken cancellationToken)
         {
             var user = await _userRepository.GetUserByEmailAsync(request.Email);
 
