@@ -7,6 +7,8 @@ using Account.Domain.Entities;
 using System.ComponentModel.DataAnnotations;
 using Account.Application.UseCases.User.GetUser;
 using Microsoft.AspNetCore.Authorization;
+using Account.Api.Dto;
+using Account.Application.UseCases.User.Register;
 
 namespace Account.Api.Controllers;
 
@@ -25,17 +27,17 @@ public class UserController : ControllerBase
     }
 
     [HttpPost]
-    [Route("login", Order = 1, Name = "LoginUser")]
+    [Route("register", Order = 1, Name = "Register")]
     [Produces("application/json")]
     [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status406NotAcceptable)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
-    public async Task<IActionResult> LoginUserAsync([FromBody] LoginRequest loginRequest, CancellationToken cancellationToken)
+    public async Task<IActionResult> RegisterAsync([FromBody] RegisterRequestDto loginRequest, CancellationToken cancellationToken)
     {
-        var loginCommand = new LoginCommand(loginRequest.Email);
-        
+        var loginCommand = new RegisterCommand(loginRequest.Email, loginRequest.Password);
+
         var result = await _mediator.Send(loginCommand, cancellationToken);
 
         if (result.IsSuccess)
@@ -44,9 +46,29 @@ public class UserController : ControllerBase
         return this.Problem(result.Error);
     }
 
+    [HttpPost]
+    [Route("login", Order = 2, Name = "LoginUser")]
+    [Produces("application/json")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status406NotAcceptable)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
+    public async Task<IActionResult> LoginUserAsync([FromBody] LoginRequestDto loginRequest, CancellationToken cancellationToken)
+    {
+        var loginCommand = new LoginCommand(loginRequest.Email);
+        
+        var result = await _mediator.Send(loginCommand, cancellationToken);
+
+        if (result.IsSuccess)
+            return NoContent();
+
+        return this.Problem(result.Error);
+    }
+
     [Authorize]
     [HttpGet]
-    [Route("{email}", Order = 2, Name = "GetUserByEmail")]
+    [Route("{email}", Order = 3, Name = "GetUserByEmail")]
     [Produces("application/json")]
     [ProducesResponseType(typeof(User), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]

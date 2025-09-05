@@ -32,5 +32,19 @@ namespace Account.Infrastructure.Repository
                 Email = user.Email
             };
         }
+
+        public async ValueTask<int> CreateUserAsync(string email, string passwordHash)
+        {
+            var user = new Db.Models.User
+            {
+                Username = email,
+                Email = email,
+                PasswordHash = passwordHash
+            };
+
+            _context.Users.Add(user);
+
+            return await _context.SaveChangesAsync();
+        }
     }
 }

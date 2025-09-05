@@ -1,4 +1,5 @@
 ﻿using Account.Application.UseCases.Login;
+using Account.Application.UseCases.User.Register;
 using Account.Domain.Common;
 using Account.Domain.Errors;
 using Account.Domain.Interfaces;
