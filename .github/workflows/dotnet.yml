@@ -48,8 +48,5 @@ jobs:
             path: "src/**/**/*.trx"
             reporter: dotnet-trx
             fail-on-error: true
-        - name: Publish build output
-          uses: actions/upload-artifact@v4
-          with:
-            name: Account.API-${{ env.VERSION }}
-            path: ./artifacts
+        - name: Publish artifacts
+          run: dotnet publish src/Account.Api.sln -c Release -o ./artifacts /p:Version=$VERSION
