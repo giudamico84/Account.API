@@ -35,7 +35,7 @@ jobs:
           run: dotnet restore
           working-directory: src/
         - name: Build
-          run: dotnet build --no-restore --configuration Release --output ./artifacts /p:Version=${{ env.VERSION }}
+          run: dotnet build --no-restore --configuration Release
           working-directory: src/
         - name: Test
           run: dotnet test --verbosity normal --logger "trx"
