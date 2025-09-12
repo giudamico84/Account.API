@@ -35,10 +35,10 @@ jobs:
           run: dotnet restore
           working-directory: src/
         - name: Build
-          run: dotnet build --no-restore --output ./artifacts /p:Version=${{ env.VERSION }}
+          run: dotnet build --no-restore --configuration Release --output ./artifacts /p:Version=${{ env.VERSION }}
           working-directory: src/
         - name: Test
-          run: dotnet test --no-build --verbosity normal --logger "trx"
+          run: dotnet test --verbosity normal --logger "trx"
           working-directory: src/        
         - name: Test Report
           uses: dorny/test-reporter@v1      
