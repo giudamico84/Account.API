@@ -49,9 +49,9 @@ jobs:
             reporter: dotnet-trx
             fail-on-error: true
         - name: Publish artifacts
-          run: dotnet publish src/Account.Api.sln -c Release /p:Version=$VERSION
+          run: dotnet publish src/Account.Api/Account.Api.csproj -c Release -o ./artifacts/Account.Api /p:Version=$VERSION
         - name: Upload build artifacts
           uses: actions/upload-artifact@v4
           with:
             name: Account.Api-${{ env.VERSION }}
-            path: ./artifacts
+            path: ./artifacts/**/*
