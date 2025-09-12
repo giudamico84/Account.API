@@ -25,11 +25,17 @@ jobs:
           uses: actions/setup-dotnet@v4
           with:
             dotnet-version: 8.0.x
+        - name: Generate version
+          id: version
+          run: |
+            VERSION="1.0.${{ github.run_number }}"
+            echo "VERSION=$VERSION" >> $GITHUB_ENV
+            echo "Generated version: $VERSION"
         - name: Restore dependencies
           run: dotnet restore
           working-directory: src/
         - name: Build
-          run: dotnet build --no-restore
+          run: dotnet build --no-restore --configuration Release --output ./artifacts /p:Version=${{ env.VERSION }}
           working-directory: src/
         - name: Test
           run: dotnet test --no-build --verbosity normal --logger "trx"
@@ -42,3 +48,8 @@ jobs:
             path: "src/**/**/*.trx"
             reporter: dotnet-trx
             fail-on-error: true
+        - name: Publish build output
+          uses: actions/upload-artifact@v3
+          with:
+            name: Account.API-${{ env.VERSION }}
+            path: ./artifacts
