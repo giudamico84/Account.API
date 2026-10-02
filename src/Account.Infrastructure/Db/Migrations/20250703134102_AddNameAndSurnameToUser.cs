@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
@@ -13,13 +13,13 @@ namespace Account.Infrastructure.Db.Migrations
             migrationBuilder.AddColumn<string>(
                 name: "Name",
                 table: "Users",
-                type: "nvarchar(max)",
+                type: "TEXT",
                 nullable: true);
 
             migrationBuilder.AddColumn<string>(
                 name: "Surname",
                 table: "Users",
-                type: "nvarchar(max)",
+                type: "TEXT",
                 nullable: true);
         }
 

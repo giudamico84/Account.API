@@ -13,7 +13,7 @@ namespace Account.Infrastructure
     {
         public static void AddInfrastructureServices(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
+            services.AddDbContext<ApplicationDbContext>(options => options.UseSqlite(configuration.GetConnectionString("DefaultConnection")));
 
             services.Configure<JwtOptions>(configuration.GetSection("JwtOptions"));
 

@@ -32,3 +32,6 @@
 /src/Account.Infrastructure.Test/obj
 /src/Account.Db.Migrations/bin/Debug/net8.0
 /src/Account.Db.Migrations/obj
+*.db
+*.db-shm
+*.db-wal
