@@ -49,7 +49,7 @@ public class UserController : ControllerBase
     [HttpPost]
     [Route("login", Order = 2, Name = "LoginUser")]
     [Produces("application/json")]
-    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status406NotAcceptable)]
@@ -61,7 +61,7 @@ public class UserController : ControllerBase
         var result = await _mediator.Send(loginCommand, cancellationToken);
 
         if (result.IsSuccess)
-            return NoContent();
+            return Ok(result.Value);
 
         return this.Problem(result.Error);
     }
