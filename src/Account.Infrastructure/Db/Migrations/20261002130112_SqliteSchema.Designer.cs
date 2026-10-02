@@ -3,7 +3,6 @@ using System;
 using Account.Infrastructure.Db;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
@@ -12,26 +11,20 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Account.Infrastructure.Db.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250703125047_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20261002130112_SqliteSchema")]
+    partial class SqliteSchema
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
-            modelBuilder
-                .HasAnnotation("ProductVersion", "9.0.6")
-                .HasAnnotation("Relational:MaxIdentifierLength", 128);
+            modelBuilder.HasAnnotation("ProductVersion", "9.0.6");
 
             modelBuilder.Entity("Account.Infrastructure.Db.Models.Role", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
-
-                    b.Property<string>("Description")
-                        .HasMaxLength(255)
-                        .HasColumnType("TEXT");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -68,12 +61,15 @@ namespace Account.Infrastructure.Db.Migrations
                         .HasColumnType("INTEGER")
                         .HasDefaultValue(true);
 
+                    b.Property<string>("Name")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("PasswordHash")
                         .IsRequired()
                         .HasMaxLength(255)
                         .HasColumnType("TEXT");
 
-                    b.Property<DateTime>("UpdateAt")
+                    b.Property<string>("Surname")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Username")
@@ -108,7 +104,9 @@ namespace Account.Infrastructure.Db.Migrations
                         .IsRequired()
                         .HasMaxLength(255)
                         .HasColumnType("TEXT");
-b.Property<int>("UserId").HasColumnType("INTEGER");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id")
                         .HasName("PK__UserClai__3214EC0769302F63");
@@ -120,8 +118,11 @@ b.Property<int>("UserId").HasColumnType("INTEGER");
 
             modelBuilder.Entity("Account.Infrastructure.Db.Models.UserRole", b =>
                 {
-b.Property<int>("UserId").HasColumnType("INTEGER");
-b.Property<int>("RoleId").HasColumnType("INTEGER");
+                    b.Property<int>("UserId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("RoleId")
+                        .HasColumnType("INTEGER");
 
                     b.Property<DateTime>("AssignedAt")
                         .ValueGeneratedOnAdd()

@@ -24,8 +24,6 @@ public partial class ApplicationDbContext : DbContext
 
     public virtual DbSet<UserRole> UserRoles { get; set; }
 
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) => optionsBuilder.UseSqlServer("Server=(localdb)\\MSSQLLocalDB;Database=AuthDb;Trusted_Connection=True;");
-
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Role>(entity =>
@@ -48,8 +46,7 @@ public partial class ApplicationDbContext : DbContext
             entity.HasIndex(e => e.Email, "UQ__Users__A9D10534B029867E").IsUnique();
 
             entity.Property(e => e.CreatedAt)
-                .HasDefaultValueSql("(getdate())")
-                .HasColumnType("datetime");
+                .HasDefaultValueSql("CURRENT_TIMESTAMP");
             entity.Property(e => e.Email)
                 .IsRequired()
                 .HasMaxLength(150);
@@ -83,8 +80,7 @@ public partial class ApplicationDbContext : DbContext
             entity.HasKey(e => new { e.UserId, e.RoleId }).HasName("PK__UserRole__AF2760AD50BBC7BF");
 
             entity.Property(e => e.AssignedAt)
-                .HasDefaultValueSql("(getdate())")
-                .HasColumnType("datetime");
+                .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
             entity.HasOne(d => d.Role).WithMany(p => p.UserRoles)
                 .HasForeignKey(d => d.RoleId)
